@@ -26,7 +26,7 @@ export function Posts() {
     }
   }, [currentPage, queryClient]);
 
-  let { data, error, isError, isLoading, isPreviousData } = useQuery(
+  const { data, error, isError, isLoading, isPreviousData } = useQuery(
     ['posts', currentPage],
     () => fetchPosts(currentPage),
     {
