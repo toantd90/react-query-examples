@@ -1,6 +1,12 @@
 // @ts-nocheck
 import dayjs from 'dayjs';
-import { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import {
+  Dispatch,
+  SetStateAction,
+  useCallback,
+  useEffect,
+  useState,
+} from 'react';
 import { useQuery, useQueryClient } from 'react-query';
 
 import { axiosInstance } from '../../../axiosInstance';
@@ -43,6 +49,11 @@ export function useAppointments(): UseAppointments {
   const { user } = useUser();
   const queryClient = useQueryClient();
 
+  const selectFn = useCallback(
+    (data) => getAvailableAppointments(data, user),
+    [user],
+  );
+
   useEffect(() => {
     const { month, year } = getNewMonthYear(monthYear, 1);
     queryClient.prefetchQuery([queryKeys.appointments, year, month], () =>
@@ -55,7 +66,7 @@ export function useAppointments(): UseAppointments {
     [queryKeys.appointments, monthYear.year, monthYear.month],
     () => getAppointments(monthYear.year, monthYear.month),
     {
-      staleTime: 2000,
+      select: showAll ? undefined : selectFn,
     },
   );
 
