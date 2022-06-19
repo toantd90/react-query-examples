@@ -1,4 +1,4 @@
-import { createStandaloneToast } from '@chakra-ui/react';
+import { createStandaloneToast, flattenTokens } from '@chakra-ui/react';
 import { QueryClient } from 'react-query';
 
 import { theme } from '../theme';
@@ -20,6 +20,11 @@ export const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       onError: queryErrorHandler,
+      staleTime: 600000, // 10 minutes
+      cacheTime: 900000, // 15 minutes
+      refetchOnMount: false,
+      refetchOnReconnect: false,
+      refetchOnWindowFocus: false,
     },
   },
 });

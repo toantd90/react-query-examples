@@ -1,6 +1,6 @@
 # React Query
 
-[https://tkdodo.eu/blog/practical-react-query](https://tkdodo.eu/blog/practical-react-query)
+[React Query blog from TkDodo](https://react-query.tanstack.com/community/tkdodos-blog)
 
 ### **Overview**
 
@@ -32,9 +32,7 @@ function App() {
 	const queryClient = new QueryClient();
 
 	<QueryClientProvider client={queryClient}>
-		<div className="App">
-			
-		</div>
+		<div className="App" />
 		<ReactQueryDevtools />
 	</QueryClientProvider>
 }
@@ -77,3 +75,21 @@ useEffect(() => {
 💡 `keepPreviousData` is only useful if background doesn’t change.
   - In our blog post app, it will provide a good experience for user if we keep data from current page, before go to the next page
   - However, in lazy days app, it is not a good idea to use this option as the calendar and day will be change month by month.
+
+
+For data that not gonna change frequently, we can increase `staleTime`, `cacheTime` and disable `refetchOnMount`, `refetchOnReconnect`, `refetchOnWindowFocus`. Add it to defaultOption on global queryClient
+
+```jsx
+export const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      onError: queryErrorHandler,
+      staleTime: 600000, // 10 minutes
+      cacheTime: 900000, // 15 minutes
+      refetchOnMount: false,
+      refetchOnReconnect: false,
+      refetchOnWindowFocus: false,
+    },
+  },
+});
+```
